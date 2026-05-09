@@ -1,0 +1,30 @@
+name: CI Local Practice - Docker Build
+
+on:
+  push:
+    branches: ["deploy"]
+
+  workflow_dispatch:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Descargar código del repositorio
+        uses: actions/checkout@v4
+
+      - name: Mostrar archivos del proyecto
+        run: ls -la
+
+      - name: Validar archivo docker-compose.yml
+        run: docker compose config
+
+      - name: Construir imagen backend
+        run: docker build -t tienda-backend ./backend
+
+      - name: Construir imagen frontend
+        run: docker build -t tienda-frontend ./frontend
+
+      - name: Ver imágenes creadas
+        run: docker images
