@@ -10,12 +10,22 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
 
+    env:
+      APP_ENV: ${{ vars.APP_ENV }}
+
     steps:
       - name: Descargar código del repositorio
         uses: actions/checkout@v4
 
       - name: Mostrar archivos del proyecto
         run: ls -la
+
+      - name: Probar variable y secret
+        env:
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+        run: |
+          echo "Ambiente de ejecución: $APP_ENV"
+          echo "Password recibido desde secret: $DB_PASSWORD"
 
       - name: Validar archivo docker-compose.yml
         run: docker compose config
